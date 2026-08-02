@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:chatop;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+app:
+  security:
+    jwt:
+      secret: VGhpcyBpcyBhIGxvY2FsIHRlc3Qgc2VjcmV0IHdpdGggYXQgbGVhc3QgMzIgYnl0ZXMu
+      issuer: chatop-api-test
+      expiration: PT1H
+  storage:
+    directory: target/test-uploads
+    public-base-url: http://localhost:3001
+    max-file-size: 5MB
+
+debug: false
