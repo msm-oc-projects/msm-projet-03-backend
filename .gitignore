@@ -1,0 +1,19 @@
+# Secrets locaux
+.env
+
+# Java / Maven
+target/
+*.log
+uploads/
+.classpath
+.project
+.settings/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Système
+.DS_Store
+Thumbs.db
