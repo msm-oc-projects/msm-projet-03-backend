@@ -1,0 +1,7 @@
+REVOKE ALL PRIVILEGES, GRANT OPTION
+  FROM 'chatop_app'@'%';
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+  ON chatop_db.* TO 'chatop_app'@'%';
+
+FLUSH PRIVILEGES;
