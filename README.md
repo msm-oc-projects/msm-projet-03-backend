@@ -25,7 +25,10 @@ front-end séparé.
 
 ## Installation et lancement
 
-Depuis le dossier du back-end :
+Depuis le dossier du back-end. Les commandes Docker, Maven et OpenSSL sont
+communes aux trois systèmes.
+
+Linux/macOS (Bash) :
 
 ```bash
 cp .env.example .env
@@ -47,6 +50,22 @@ source .env
 set +a
 mvn spring-boot:run
 ```
+
+Windows PowerShell :
+
+```powershell
+Copy-Item .env.example .env
+docker compose up -d
+Get-Content .env | ForEach-Object {
+    if ($_ -match '^\s*([^#][^=]*)=(.*)$') {
+        [Environment]::SetEnvironmentVariable($matches[1].Trim(), $matches[2].Trim(), 'Process')
+    }
+}
+mvn spring-boot:run
+```
+
+Dans les deux cas, renseigner d'abord les valeurs de `.env`, notamment
+`MYSQL_PASSWORD` et `JWT_SECRET`.
 
 L'API écoute sur <http://localhost:3001>.
 
@@ -90,10 +109,25 @@ courante.
 
 ### Contrôles
 
+Linux/macOS (Bash) :
+
 ```bash
 docker compose exec mysql mysql \
   -u chatop_app -p chatop_db \
   -e "SHOW TABLES;"
+```
+
+Windows PowerShell :
+
+```powershell
+docker compose exec -T -e MYSQL_PWD="$env:MYSQL_PASSWORD" mysql mysql -u chatop_app chatop_db -e "SHOW TABLES;"
+```
+
+Si les variables du fichier `.env` ne sont pas encore chargées dans la session
+PowerShell, utiliser directement le mot de passe demandé par MySQL :
+
+```powershell
+docker compose exec -T mysql mysql -u chatop_app -p chatop_db -e "SHOW TABLES;"
 ```
 
 La commande demande le mot de passe sans l'afficher dans l'historique du
@@ -119,8 +153,18 @@ Si Maven signale un `JAVA_HOME` incorrect à cause d'une configuration globale
 du poste, indiquer explicitement le chemin du JDK 17. Sur le poste de
 validation actuel :
 
+Linux/macOS (Bash) :
+
 ```bash
 MAVEN_SKIP_RC=1 JAVA_HOME=/usr/lib/jvm/java-17-openjdk mvn spring-boot:run
+```
+
+Windows PowerShell (chemin à adapter) :
+
+```powershell
+$env:MAVEN_SKIP_RC = '1'
+$env:JAVA_HOME = 'C:\Program Files\Java\jdk-17'
+mvn spring-boot:run
 ```
 
 ### Routes disponibles
@@ -162,6 +206,8 @@ et les statuts d'erreur possibles. Les routes sont regroupées sous les tags
 Authentification, Utilisateurs, Locations et Messages.
 
 ### Tests automatisés
+
+Linux/macOS et Windows PowerShell :
 
 ```bash
 mvn verify
