@@ -1,19 +1,5 @@
 package com.chatop.api.auth.controller;
 
-import com.chatop.api.auth.dto.AuthResponse;
-import com.chatop.api.auth.dto.LoginRequest;
-import com.chatop.api.auth.dto.RegisterRequest;
-import com.chatop.api.auth.service.AuthService;
-import com.chatop.api.shared.error.ApiError;
-import com.chatop.api.user.dto.UserResponse;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -22,6 +8,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.chatop.api.auth.dto.AuthResponse;
+import com.chatop.api.auth.dto.LoginRequest;
+import com.chatop.api.auth.dto.RegisterRequest;
+import com.chatop.api.auth.service.AuthService;
+import com.chatop.api.shared.error.ApiError;
+import com.chatop.api.user.dto.UserResponse;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -43,7 +45,9 @@ public class AuthController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Compte créé",
                     content = @Content(schema = @Schema(implementation = AuthResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Données invalides ou e-mail déjà utilisé",
+            @ApiResponse(responseCode = "400", description = "Données invalide",
+                    content = @Content(schema = @Schema(implementation = ApiError.class))),
+            @ApiResponse(responseCode = "409", description = "E-mail déjà utilisé",
                     content = @Content(schema = @Schema(implementation = ApiError.class)))
     })
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {

@@ -1,5 +1,7 @@
 package com.chatop.api.message.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,11 +13,14 @@ public record CreateMessageRequest(
         @Schema(description = "Identifiant de la location", example = "1")
         @NotNull(message = "L'identifiant de la location est obligatoire")
         @Positive(message = "L'identifiant de la location doit être positif")
+        @JsonProperty("rentalId")
         Long rentalId,
+        
         @Schema(description = "Identifiant utilisateur attendu par le front ; l'auteur réel vient du JWT",
                 example = "2")
         @NotNull(message = "L'identifiant de l'utilisateur est obligatoire")
         @Positive(message = "L'identifiant de l'utilisateur doit être positif")
+        @JsonProperty("userId")
         Long userId,
         @Schema(description = "Contenu du message", example = "Cette maison est-elle disponible ?")
         @NotBlank(message = "Le message est obligatoire")
